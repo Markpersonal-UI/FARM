@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Production Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <span class="farm-icon">🚜</span>
+            </div>
+            <h1>Moonlight Farm</h1>
+            <p class="login-subtitle">Production Management System</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userType">User Type</label>
+                    <select id="userType" name="userType" required>
+                        <option value="">Select user type</option>
+                        <option value="admin">Administrator</option>
+                        <option value="user">Farm Staff</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-login">Login</button>
+            </form>
+
+            <p class="register-link">Don't have an account? <a href="register.html">Register here</a></p>
+
+            <div class="login-demo">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Admin: admin@farm.com / password123</p>
+                <p>User: staff@farm.com / password123</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
