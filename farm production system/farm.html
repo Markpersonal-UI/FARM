@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Production Management System</title>
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="image/farm.png" alt="Farm Logo" width="350">
+            </div>
+            <h1>Moonlight Farm Production</h1>
+            <p class="login-subtitle">Farm Production Record Management System</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userType">User Type</label>
+                    <select id="userType" required>
+                        <option value="">Select user type</option>
+                        <option value="admin">Administrator</option>
+                        <option value="user">Farm Staff</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-login">Login</button>
+            </form>
+        
+        </div>
+    </div>
+
+    <!-- Main Dashboard (Hidden initially) -->
+    <div id="dashboardPage" class="dashboard-wrapper" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="image/farm.png" alt="Farm Logo" width="130">
+                </div>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Navigation items populated by JavaScript -->
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" id="userAvatar">JD</div>
+                    <div class="user-info">
+                        <p class="username" id="userName">User Name</p>
+                        <p class="role" id="userRole">User Role</p>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Welcome back to your farm</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-secondary">Settings</button>
+                    <button class="btn-secondary">Help</button>
+                </div>
+            </header>
+
+            <!-- Content Section -->
+            <section class="content">
+                <!-- Dashboard Section -->
+                <div id="dashboard" class="section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🐄</div>
+                            <div class="stat-content">
+                                <h3>Total Livestock</h3>
+                                <p class="stat-number">2,450</p>
+                                <p class="stat-change">↑ 12 this month</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🥛</div>
+                            <div class="stat-content">
+                                <h3>Daily Production</h3>
+                                <p class="stat-number">12,850L</p>
+                                <p class="stat-change">↑ 5.2% this week</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🌽</div>
+                            <div class="stat-content">
+                                <h3>Feed Inventory</h3>
+                                <p class="stat-number">8,420 kg</p>
+                                <p class="stat-change">⚠️ Reorder soon</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💚</div>
+                            <div class="stat-content">
+                                <h3>Healthy Animals</h3>
+                                <p class="stat-number">2,380</p>
+                                <p class="stat-change">97.1% healthy</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <h2>Recent Activities</h2>
+                            <div class="activity-list" id="activityList">
+                                <!-- Activities populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livestock Section -->
+                <div id="livestock" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Livestock Management</h2>
+                            <p>View and manage all animals in your farm</p>
+                        </div>
+                        <button class="btn-primary" id="addAnimalBtn" style="display: none;">+ Add Animal</button>
+                    </div>
+                    <div class="card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Breed</th>
+                                    <th>Age</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="livestockTable">
+                                <!-- Data populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Feed Section -->
+                <div id="feed" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Feed & Nutrition Management</h2>
+                            <p>Manage feed inventory and allocation</p>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-primary" id="addFeedBtn" style="display: none;">+ Add Feed</button>
+                            <button class="btn-primary" onclick="farmSystem.printTable('feedInventoryTable', 'Feed Inventory Report')">🖨️ Print</button>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>Feed Inventory</h3>
+                            <div class="feed-list" id="feedList">
+                                <!-- Feed items populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Daily Feed Allocation</h3>
+                            <div class="allocation-chart" id="allocationChart">
+                                <!-- Allocation populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Production Section -->
+                <div id="production" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 id="productionTitle">Production Records</h2>
+                            <p id="productionSubtitle">Track all farm production</p>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-primary" id="addProductionBtn" style="display: none;">+ Add Record</button>
+                            <button class="btn-primary" onclick="farmSystem.printTable('productionRecordsTable', 'Production Records Report')">🖨️ Print</button>
+                        </div>
+                    </div>
+                    <div class="card" id="productionStatsCard">
+                        <div class="production-stats" id="productionStats">
+                            <!-- Production data populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Section -->
+                <div id="health" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Health & Veterinary</h2>
+                            <p>Manage animal health and medical records</p>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-primary" id="addHealthBtn" style="display: none;">+ Add Record</button>
+                            <button class="btn-primary" onclick="farmSystem.printTable('healthTable', 'Health Records Report')">🖨️ Print</button>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>Vaccination Schedule</h3>
+                            <div class="schedule-list" id="scheduleList">
+                                <!-- Schedule populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Health Alerts</h3>
+                            <div class="alert-list" id="alertList">
+                                <!-- Alerts populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Section -->
+                <div id="finance" class="section">
+                    <h2>Financial Management</h2>
+                    <div class="finance-summary" id="financeSummary">
+                        <!-- Finance data populated by JavaScript -->
+                    </div>
+                    <div class="card">
+                        <h3>Revenue Breakdown</h3>
+                        <div class="button-group" style="margin-bottom: 15px;">
+                            <button class="btn-primary" onclick="farmSystem.printTable('financeTable', 'Financial Report')">🖨️ Print</button>
+                        </div>
+                        <div class="revenue-items" id="revenueItems">
+                            <!-- Revenue populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Section -->
+                <div id="inventory" class="section">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reports" class="section">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <!-- User Profile Section (for staff users) -->
+                <div id="profile" class="section">
+                    <h2>My Profile</h2>
+                    <div class="card">
+                        <div class="profile-form" id="profileForm">
+                            <!-- Profile form populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Section (for admin only) -->
+                <div id="users" class="section">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <!-- Settings Section (for admin only) -->
+                <div id="settings" class="section">
+                    <h2>System Settings</h2>
+                    <div class="card">
+                        <h3>General Settings</h3>
+                        <div class="form-group">
+                            <label>Farm Name</label>
+                            <input type="text" value="My Farm" placeholder="Enter farm name">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" value="United States" placeholder="Enter farm location">
+                        </div>
+                        <button class="btn-primary">Save Settings</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal dialogs for adding records to each category -->
+    <!-- Add Livestock Modal -->
+    <div id="addLivestockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Animal</h3>
+                <button type="button" class="modal-close" onclick="farmSystem.closeModal('addLivestockModal')">&times;</button>
+            </div>
+            <form id="addLivestockForm" class="modal-form">
+                <div class="form-group">
+                    <label for="livestockName">Animal Name</label>
+                    <input type="text" id="livestockName" placeholder="e.g., Bessie" required>
+                </div>
+                <div class="form-group">
+                    <label for="livestockType">Type</label>
+                    <select id="livestockType" required>
+                        <option value="">Select type</option>
+                        <option value="Cattle">Cattle</option>
+                        <option value="Sheep">Sheep</option>
+                        <option value="Goat">Goat</option>
+                        <option value="Pig">Pig</option>
+                        <option value="Poultry">Poultry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="livestockBreed">Breed</label>
+                    <input type="text" id="livestockBreed" placeholder="e.g., Holstein" required>
+                </div>
+                <div class="form-group">
+                    <label for="livestockAge">Age</label>
+                    <input type="text" id="livestockAge" placeholder="e.g., 3 years" required>
+                </div>
+                <div class="form-group">
+                    <label for="livestockStatus">Status</label>
+                    <select id="livestockStatus" required>
+                        <option value="Healthy">Healthy</option>
+                        <option value="Monitoring">Monitoring</option>
+                        <option value="Under Treatment">Under Treatment</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="farmSystem.closeModal('addLivestockModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Animal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Feed Modal -->
+    <div id="addFeedModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Feed Inventory</h3>
+                <button type="button" class="modal-close" onclick="farmSystem.closeModal('addFeedModal')">&times;</button>
+            </div>
+            <form id="addFeedForm" class="modal-form">
+                <div class="form-group">
+                    <label for="feedName">Feed Name</label>
+                    <input type="text" id="feedName" placeholder="e.g., Corn Silage" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedAmount">Amount</label>
+                    <input type="number" id="feedAmount" placeholder="e.g., 5000" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedUnit">Unit</label>
+                    <select id="feedUnit" required>
+                        <option value="kg">kg</option>
+                        <option value="lb">lb</option>
+                        <option value="tons">tons</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="feedMinStock">Minimum Stock Level</label>
+                    <input type="number" id="feedMinStock" placeholder="e.g., 1000" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="farmSystem.closeModal('addFeedModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Feed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Production Record Modal -->
+    <div id="addProductionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Production Record</h3>
+                <button type="button" class="modal-close" onclick="farmSystem.closeModal('addProductionModal')">&times;</button>
+            </div>
+            <form id="addProductionForm" class="modal-form">
+                <div class="form-group">
+                    <label for="productionDate">Date</label>
+                    <input type="date" id="productionDate" min="" required>
+                </div>
+                <div class="form-group">
+                    <label for="productionType">Production Type</label>
+                    <select id="productionType" required>
+                        <option value="">Select type</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Eggs">Eggs</option>
+                        <option value="Meat">Meat</option>
+                        <option value="Wool">Wool</option>
+                        <option value="Dairy">Dairy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productionAmount">Amount</label>
+                    <input type="number" id="productionAmount" placeholder="e.g., 500" required>
+                </div>
+                <div class="form-group">
+                    <label for="productionUnit">Unit</label>
+                    <input type="text" id="productionUnit" placeholder="e.g., kg, L, units" required>
+                </div>
+                <div class="form-group">
+                    <label for="productionHerd">Herd</label>
+                    <select id="productionHerd" required>
+                        <option value="Herd A">Herd A</option>
+                        <option value="Herd B">Herd B</option>
+                        <option value="Herd C">Herd C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productionNotes">Notes</label>
+                    <textarea id="productionNotes" placeholder="Optional notes" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="farmSystem.closeModal('addProductionModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Health Record Modal -->
+    <div id="addHealthModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Health Record</h3>
+                <button type="button" class="modal-close" onclick="farmSystem.closeModal('addHealthModal')">&times;</button>
+            </div>
+            <form id="addHealthForm" class="modal-form">
+                <div class="form-group">
+                    <label for="healthDate">Date</label>
+                    <input type="date" id="healthDate" min="" required>
+                </div>
+                <div class="form-group">
+                    <label for="healthAnimalId">Animal ID</label>
+                    <input type="text" id="healthAnimalId" placeholder="e.g., #LV001" required>
+                </div>
+                <div class="form-group">
+                    <label for="healthDisease">Disease/Condition</label>
+                    <input type="text" id="healthDisease" placeholder="e.g., Healthy, Cough" required>
+                </div>
+                <div class="form-group">
+                    <label for="healthTreatment">Treatment</label>
+                    <textarea id="healthTreatment" placeholder="Describe treatment" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="healthVeterinarian">Veterinarian</label>
+                    <input type="text" id="healthVeterinarian" placeholder="e.g., Dr. Smith" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="farmSystem.closeModal('addHealthModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Inventory Modal -->
+    <div id="addInventoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Inventory Item</h3>
+                <button type="button" class="modal-close" onclick="farmSystem.closeModal('addInventoryModal')">&times;</button>
+            </div>
+            <form id="addInventoryForm" class="modal-form">
+                <div class="form-group">
+                    <label for="inventoryName">Item Name</label>
+                    <input type="text" id="inventoryName" placeholder="e.g., Vaccine Stock" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryQuantity">Quantity</label>
+                    <input type="number" id="inventoryQuantity" placeholder="e.g., 100" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryUnit">Unit</label>
+                    <input type="text" id="inventoryUnit" placeholder="e.g., doses, items, units" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryLocation">Location</label>
+                    <input type="text" id="inventoryLocation" placeholder="e.g., Cold Storage" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryStatus">Status</label>
+                    <select id="inventoryStatus" required>
+                        <option value="In Stock">In Stock</option>
+                        <option value="Low Stock">Low Stock</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="farmSystem.closeModal('addInventoryModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
